@@ -1,6 +1,7 @@
 """
 This module contains the functions for evaluation of the models
 """
+from pathlib import Path
 import pandas as pd
 import numpy as np
 from OT_deep_score_src.general_utilities import Model_task, SG_RNA, LABEL, READS, BULGES
@@ -49,6 +50,10 @@ def measure_clevage_acc(prediction_file_name, models=None, only_bulges=False, on
 
     results_df = pd.DataFrame(data={"model": models, "AUPR": auprs, "Pearson": pearsons, "Spearman": spearmans})
     pd.set_option("display.precision", 3)
+    output_file_prefix = Path(prediction_file_name).parent
+    output_file_suffix = Path(prediction_file_name).name
+    output_file = output_file_prefix / f"cleavage_accuracy_{output_file_suffix}"
+    results_df.to_csv(output_file)
 
     return results_df
 

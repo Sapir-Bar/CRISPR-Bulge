@@ -14,6 +14,7 @@ N_CORES = os.cpu_count() if isinstance(os.cpu_count(), int) else 1
 
 # ##############paths######################
 HOME_DIR = str(pathlib.Path(__file__).parent.parent.absolute()) + "/"  # project path
+print("HOME_DIR:", HOME_DIR)
 FILES_DIR = HOME_DIR + "files/"
 DATASETS_PATH = FILES_DIR + "datasets/"
 

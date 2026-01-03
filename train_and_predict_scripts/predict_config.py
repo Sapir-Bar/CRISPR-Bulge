@@ -1,8 +1,7 @@
 from train_and_predict_scripts.utilities import TrainModelSpec, predict_main
 import random
 
-from OT_deep_score_src.general_utilities import SEED, Model_type, Data_type, Encoding_type
-
+from OT_deep_score_src.general_utilities import SEED, Model_type, Data_type, Encoding_type, Model_task
 random.seed(SEED)
 
 
@@ -360,7 +359,7 @@ def create_model_spec_list(
     return train_model_spec_list
 
 
-def main(version, setting_number, model_types=None):
+def main(version, setting_number, model_types=None, model_tasks=None):
     """
     Coordinates the prediction workflow.
 
@@ -388,8 +387,12 @@ def main(version, setting_number, model_types=None):
         version, settings, include_distance_feature, encoding_type, aligned,
         setting_number, model_types)
 
+    if model_tasks is None:
+        model_tasks = (Model_task.CLASSIFICATION_TASK, Model_task.REGRESSION_TASK,)      
+
     test_dataset_df = predict_main(
         train_model_spec_list,
+        model_tasks=model_tasks,
         prediction_table_path_prefix="{}{}_cleavage_v{}{}{}".format(
             settings["output_file_prefix"], settings["test_data_type"],
             version, "_folds_{}".format(settings["k_fold_number"]), settings["output_file_suffix"]),
@@ -400,4 +403,4 @@ def main(version, setting_number, model_types=None):
 
 
 if __name__ == "__main__":
-    main(version="5_revision", setting_number=1)
+    main(version="5_revision_repetition_0", setting_number=5, model_types=(Model_type.C_3,), model_tasks=(Model_task.REGRESSION_TASK,))
