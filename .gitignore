@@ -2,3 +2,4 @@
 files/datasets
 files/bulges
 *__pycache__
+*.log

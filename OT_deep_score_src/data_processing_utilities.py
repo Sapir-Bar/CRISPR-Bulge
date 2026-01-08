@@ -103,6 +103,9 @@ def create_nucleotides_to_position_mapping():
     nucleotides_to_position_mapping.update(
         dict(zip(n_mapping_nucleotides_list, n_mapping_position_list)))
 
+    # Explicitly support ambiguous-ambiguous pairs to avoid KeyError on ("N", "N").
+    nucleotides_to_position_mapping[("N", "N")] = nucleotides_to_position_mapping[("A", "A")]
+
     return nucleotides_to_position_mapping
 
 

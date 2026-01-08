@@ -40,6 +40,10 @@ def measure_clevage_acc(prediction_file_name, models=None, only_bulges=False, on
     elif only_mismatches:
         predictions = predictions[predictions[BULGES] == 0]
 
+    # add 'label' column if not exists
+    if LABEL not in predictions.columns:
+        predictions[LABEL] = (predictions[READS] > 0).astype(int)
+
     predictions_pos = predictions[(~predictions[READS].isna()) & (predictions[READS] > 0)]
     auprs = [average_precision_score(predictions[LABEL], predictions[model]) for
              model in models]
