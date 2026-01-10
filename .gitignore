@@ -1,6 +1,6 @@
 .DS_Store
 files/datasets
-files/minimized_datasets
+files/datasets_normalized_reads
 files/bulges
 *__pycache__
 *.log
