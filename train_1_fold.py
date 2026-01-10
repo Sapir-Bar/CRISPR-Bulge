@@ -3,9 +3,17 @@ This module provides functions for training the prediction models on entire data
 """
 
 import argparse
+import os
+import random
+import numpy as np
+
+# Set environment variable for TensorFlow determinism before importing TensorFlow
+os.environ['TF_DETERMINISTIC_OPS'] = '1'
+os.environ['TF_CUDNN_DETERMINISTIC'] = '1'
+
 import tensorflow as tf
 
-from OT_deep_score_src.general_utilities import Model_type, Data_type, Encoding_type, Model_task
+from OT_deep_score_src.general_utilities import Model_type, Data_type, Encoding_type, Model_task, SEED
 from train_and_predict_scripts.utilities import TrainModelSpec, train_main
 
 
@@ -144,7 +152,7 @@ def validate_args_params(model_version, data_type, data_types_to_exclude, transf
     """
     # validate model version
     if model_version.startswith("5_revision"):
-        model_parameters = {"batch_size": 512, "learning_rate": 0.0005}
+        model_parameters = {"batch_size": 512, "learning_rate": 0.005}
     elif model_version.startswith("4_revision"):
         model_parameters = {"batch_size": 512}
     else:
@@ -225,6 +233,14 @@ def main():
     Parses command-line arguments, initializes GPU settings for TensorFlow,
     and orchestrates the model training process.
     """
+    # Set random seeds for reproducibility
+    random.seed(SEED)
+    np.random.seed(SEED)
+    tf.random.set_seed(SEED)
+    
+    # Enable deterministic operations in TensorFlow
+    tf.config.experimental.enable_op_determinism()
+    
     # Enable GPU memory growth
     gpus = tf.config.experimental.list_physical_devices("GPU")
     if gpus:

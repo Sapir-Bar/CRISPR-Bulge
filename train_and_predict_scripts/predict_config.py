@@ -403,4 +403,4 @@ def main(version, setting_number, model_types=None, model_tasks=None):
 
 
 if __name__ == "__main__":
-    main(version="5_revision_repetition_0", setting_number=5, model_types=(Model_type.C_3,), model_tasks=(Model_task.REGRESSION_TASK,))
+    main(version="5_revision", setting_number=7, model_types=(Model_type.C_3,), model_tasks=(Model_task.REGRESSION_TASK,))
