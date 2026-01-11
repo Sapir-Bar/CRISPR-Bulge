@@ -550,6 +550,7 @@ def transformer_generator(data, trans_type):
         trans_type (Data_trans_type): The type of transformation desired.
             Options include:
                 * "NONE": No transformation.
+                * "LOGIT": Logit transformation (log(p / (1 - p))) with clipping.
                 * "LOG1P": Logarithmic (log1p) transformation.
                 * "LOG1P_MAX": Logarithmic (log1p) followed by max absolute scaling.
                 * "STANDARD": Standard scaling (centering and scaling to unit variance).
@@ -564,6 +565,17 @@ def transformer_generator(data, trans_type):
     if trans_type == Data_trans_type.NONE:
         # identity transformer
         transformer = FunctionTransformer()
+    elif trans_type == Data_trans_type.LOGIT:
+        def logit_func(x):
+            # Clip values to avoid log(0) and log(inf)
+            p = np.clip(x, 1e-6, 1 - 1e-6)
+            return np.log(p / (1 - p))
+        
+        def inverse_logit_func(x):
+            # Inverse of logit: 1 / (1 + exp(-x))
+            return 1 / (1 + np.exp(-x))
+        
+        transformer = FunctionTransformer(func=logit_func, inverse_func=inverse_logit_func)
     elif trans_type == Data_trans_type.LOG1P:
         transformer = FunctionTransformer(func=np.log1p, inverse_func=np.expm1)
     elif trans_type == Data_trans_type.LOG1P_MAX:

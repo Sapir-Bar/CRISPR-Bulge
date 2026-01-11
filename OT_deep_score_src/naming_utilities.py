@@ -25,6 +25,7 @@ def extract_model_name(model_type, model_task, include_distance_feature, include
     model_name += "-positiveSgRNAs" if exclude_sg_rnas_without_positives else ""
     if model_task != Model_task.CLASSIFICATION_TASK:
         model_name += "-noTrans" if trans_type == Data_trans_type.NONE else ""
+        model_name += "-logitTrans" if trans_type == Data_trans_type.LOGIT else ""
         model_name += "-log1pMaxTrans" if trans_type == Data_trans_type.LOG1P_MAX else ""
         model_name += "-maxTrans" if trans_type == Data_trans_type.MAX else ""
         model_name += "-standardTrans" if trans_type == Data_trans_type.STANDARD else ""

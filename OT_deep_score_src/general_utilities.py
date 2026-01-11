@@ -16,7 +16,7 @@ N_CORES = os.cpu_count() if isinstance(os.cpu_count(), int) else 1
 HOME_DIR = str(pathlib.Path(__file__).parent.parent.absolute()) + "/"  # project path
 print("HOME_DIR:", HOME_DIR)
 FILES_DIR = HOME_DIR + "files/"
-DATASETS_PATH = FILES_DIR + "datasets/"
+DATASETS_PATH = FILES_DIR + "datasets_normalized_reads/"
 
 # #################constants##################
 SEED = 10
@@ -94,6 +94,7 @@ class Data_trans_type(Enum):
 
     Values:
         NONE: No transformation.
+        LOGIT: Logit transformation (log(p / (1 - p))).
         LOG1P: Logarithmic (log1p) transformation.
         LOG1P_MAX: Log1p followed by max scaling.
         STANDARD: Standard scaling.
@@ -103,6 +104,7 @@ class Data_trans_type(Enum):
     """
 
     NONE = "no_trans"
+    LOGIT = "logit_trans"
     LOG1P = "ln_x_plus_one_trans"
     LOG1P_MAX = "ln_x_plus_one_and_max_trans"
     STANDARD = "standard_trans"
