@@ -2,5 +2,7 @@
 files/datasets
 files/datasets_normalized_reads
 files/bulges
+files/hg38
 *__pycache__
 *.log
+

@@ -194,10 +194,12 @@ def load_dataset(
     else:
         dataset_df = pd.read_csv(
             DATASETS_PATH + "{}.csv".format(data_type))
+    # filters out off-target sequences containing 'N'    
     dataset_df = dataset_df[dataset_df[OFF_TARGET].str.find("N") == -1]
     # drop positives sites with less then read_threshold and set the labels
     dataset_df = dataset_df[(dataset_df[READS] >= read_threshold) | (dataset_df[READS] == 0)]
     dataset_df[LABEL] = 0
+    # select rows where read count > 0 and assign value of 1 to label column 
     dataset_df.loc[dataset_df[READS] > 0, LABEL] = 1
     # exclude sgRNAs without positives if needed
     if exclude_sg_rnas_without_positives:
